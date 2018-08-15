@@ -1,4 +1,7 @@
 import joi from "joi";
+import { verifyToken } from "../helpers/jwt";
+import { waterfall } from 'async';
+import { decrypt } from "../helpers/cipher";
 
 const validator = (data, schema, cb) => {
     joi.validate(data, schema, (error, resp) => {
@@ -14,6 +17,20 @@ const validator = (data, schema, cb) => {
     })
 }
 
+const isAuthenticated = (req, res, next) => {
+    let token = req.headers.token
+    verifyToken(token, (error, resp) => {
+        if (error) {
+            res.status(409).send(error)
+        } else {
+            let data = decrypt(resp.data)
+            req.user = data
+            next()
+        }
+    })
+}
+
 export {
-    validator
+    validator,
+    isAuthenticated
 }

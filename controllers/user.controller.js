@@ -1,6 +1,8 @@
 import dbo from "../dbo";
 import { waterfall } from "async";
 import { UserModel } from "../models";
+import { encrypt, decrypt } from "../helpers/cipher";
+import { getToken, verifyToken } from "../helpers/jwt";
 
 const singup = (req, res) => {
     let data = req.body
@@ -48,7 +50,14 @@ const signin = (req, res) => {
             if (password === user.password) {
                 user = user.toObject()
                 delete user.password
-                next(null, user)
+                user = encrypt(user)
+                let accessToken = getToken(user, 'access')
+                let refreshToken = getToken(user, 'refresh')
+                let resp = {
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                }
+                next(null, resp)
             } else {
                 next({
                     message: 'Password not matched'
@@ -61,7 +70,12 @@ const signin = (req, res) => {
     })
 }
 
+const profile = (req, res) => {
+    res.status(200).send(req.user)
+}
+
 export default {
     singup,
-    signin
+    signin,
+    profile
 }
