@@ -21,6 +21,17 @@ const insert = (model, data, cb) => {
     })
 }
 
+const findOne = (model, data, cb) => {
+    model.findOne(data, (error, resp) => {
+        if (error) {
+            cb(error, null)
+        } else {
+            cb(null, resp)
+        }
+    })
+}
+
 export default {
-    insert
+    insert,
+    findOne
 }

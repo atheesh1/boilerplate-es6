@@ -5,7 +5,11 @@ let Schema = mongoose.Schema
 const UserSchema = new Schema({
     name: String,
     mailId: String,
-}, { versionKey: false })
+    password: String
+}, {
+        versionKey: false,
+        strict: true
+    })
 
 let UserModel = mongoose.model('user', UserSchema)
 

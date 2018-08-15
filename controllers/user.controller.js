@@ -25,6 +25,43 @@ const singup = (req, res) => {
     })
 }
 
+const signin = (req, res) => {
+    let { mailId, password } = req.body;
+
+    waterfall([
+        (next) => {
+            dbo.findOne(UserModel, { mailId }, (error, user) => {
+                if (error) {
+                    next({
+                        message: 'Error in finding user'
+                    }, null)
+                } else if (!user) {
+                    next({
+                        message: 'User not found'
+                    }, null)
+                } else {
+
+                    next(null, user)
+                }
+            })
+        }, (user, next) => {
+            if (password === user.password) {
+                user = user.toObject()
+                delete user.password
+                next(null, user)
+            } else {
+                next({
+                    message: 'Password not matched'
+                })
+            }
+        }
+    ], (error, resp) => {
+        if (error) res.status(400).send(error)
+        else res.status(200).send(resp)
+    })
+}
+
 export default {
-    singup
+    singup,
+    signin
 }
