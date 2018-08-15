@@ -1,4 +1,5 @@
-import constants from "./config/constants";
+require('dotenv').config()
+
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -15,5 +16,5 @@ app.get('/', (req, res) => {
         status: "UP",
     })
 })
-
+console.log('PORT:', process.env.PORT)
 app.listen(process.env.PORT);
