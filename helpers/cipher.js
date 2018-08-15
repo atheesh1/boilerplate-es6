@@ -1,12 +1,11 @@
 import crypto from "crypto";
 
-var algorithm = 'aes-256-ctr';
-var privateKey = '37LvDSm4XvjYOh9Y';
+var algorithm = process.env.ALGORITHM
+var privateKey = process.env.PASSWORD
 
-
-function decrypt(password) {
+function decrypt(token) {
     var decipher = crypto.createDecipher(algorithm, privateKey);
-    var dec = decipher.update(password, 'hex', 'utf8');
+    var dec = decipher.update(token, 'hex', 'utf8');
     dec += decipher.final('utf8');
     dec = JSON.parse(dec)
     return dec;
