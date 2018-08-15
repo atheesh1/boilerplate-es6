@@ -1,1 +1,1 @@
-# boilerplate-es6
+# boilerplate for node js es6
