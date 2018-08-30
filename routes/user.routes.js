@@ -6,9 +6,9 @@ import { isAuthenticated } from "../utils/utils";
 let routes = Router()
 
 routes.get('/', (req, res) => {
-    res.status(200).send({
-        status: "UP"
-    })
+  res.status(200).send({
+    status: "UP"
+  })
 })
 
 routes.post('/signup', userValidator.signup, userController.singup)

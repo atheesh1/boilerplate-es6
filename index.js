@@ -17,9 +17,9 @@ app.use(cors())
 app.use('/user', userRoutes)
 
 app.get('/', (req, res) => {
-    res.status(200).send({
-        status: "UP",
-    })
+  res.status(200).send({
+    status: "UP",
+  })
 })
 console.log('PORT:', process.env.PORT)
 app.listen(process.env.PORT);
